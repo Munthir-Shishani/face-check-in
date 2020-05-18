@@ -134,7 +134,7 @@
                         var xhr = new XMLHttpRequest;
                         var fullNameVariableInner = document.getElementById("fullname").value;
                         //xhr.open("POST", "https://face-check-in.azurewebsites.net/add", true);
-                        xhr.open("POST", "http://localhost:5000", true);
+                        xhr.open("POST", "http://localhost:5000/add", true);
                         xhr.setRequestHeader("Content-Type", "application/octet-stream");
                         xhr.setRequestHeader("Name", fullNameVariableInner);
                         xhr.responseType = "json";
