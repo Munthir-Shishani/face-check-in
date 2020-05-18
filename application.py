@@ -16,13 +16,14 @@ def index():
             image = open('./images/image.jpg', 'rb')
             response = Face.who_is_it(image)
             image.close()
-            if 0 in response:
-                name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + response[0]['Name']
-                name = name.replace("/", "")
-                name = name.replace(":", "")
-                os.rename('./images/image.jpg', './images/' + name + '.jpg')
-                print(response)
-                return jsonify(response)
+            if isinstance(response, dict):
+                if 0 in response:
+                    name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + response[0]['Name']
+                    name = name.replace("/", "")
+                    name = name.replace(":", "")
+                    os.rename('./images/image.jpg', './images/' + name + '.jpg')
+                    print(response)
+                    return jsonify(response)
             return {0 : 'Error'}
         except FileNotFoundError as error:
             print(error)
@@ -46,41 +47,42 @@ def addnew():
             image = open('./images/image.jpg', 'rb')
             response = Face.who_is_it(image)
             image.close()
-            if 0 in response and response[0]['Name'] == 'Unknown':
-                name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + request.headers['Name']
-                name = name.replace("/", "")
-                name = name.replace(":", "")
-                os.rename('./images/image.jpg', './images/' + name + '.jpg')
-                time.sleep(1)
-                image = open('./images/' + name + '.jpg', 'rb')
-                result = {0 : {'Status' : Face.add_new(image, name=request.headers['Name'])}}
-                image.close()
-                print(result)
-                return jsonify(result)
+            if isinstance(response, dict):
+                if 0 in response and response[0]['Name'] == 'Unknown':
+                    name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + request.headers['Name']
+                    name = name.replace("/", "")
+                    name = name.replace(":", "")
+                    os.rename('./images/image.jpg', './images/' + name + '.jpg')
+                    time.sleep(1)
+                    image = open('./images/' + name + '.jpg', 'rb')
+                    result = {0 : {'Status' : Face.add_new(image, name=request.headers['Name'])}}
+                    image.close()
+                    print(result)
+                    return jsonify(result)
 
-            if 0 in response and response[0]['Name'] == request.headers['Name']:
-                name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + request.headers['Name']
-                name = name.replace("/", "")
-                name = name.replace(":", "")
-                os.rename('./images/image.jpg', './images/' + name + '.jpg')
-                time.sleep(1)
-                image = open('./images/' + name + '.jpg', 'rb')
-                result = {0 : {'Status' : Face.add_new(image, human_id=response[0]['Person ID'])}}
-                image.close()
-                print(result)
-                return jsonify(result)
+                elif 0 in response and response[0]['Name'] == request.headers['Name']:
+                    name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + request.headers['Name']
+                    name = name.replace("/", "")
+                    name = name.replace(":", "")
+                    os.rename('./images/image.jpg', './images/' + name + '.jpg')
+                    time.sleep(1)
+                    image = open('./images/' + name + '.jpg', 'rb')
+                    result = {0 : {'Status' : Face.add_new(image, human_id=response[0]['Person ID'])}}
+                    image.close()
+                    print(result)
+                    return jsonify(result)
 
-            if 0 in response and response[0]['Name'] != request.headers['Name']:
-                name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + request.headers['Name']
-                name = name.replace("/", "")
-                name = name.replace(":", "")
-                os.rename('./images/image.jpg', './images/' + name + '.jpg')
-                time.sleep(1)
-                image = open('./images/' + name + '.jpg', 'rb')
-                result = {0 : {'Status' : Face.add_new(image, name=request.headers['Name'], human_id=response[0]['Person ID'])}}
-                image.close()
-                print(result)
-                return jsonify(result)
+                elif 0 in response and response[0]['Name'] != request.headers['Name']:
+                    name = response[0]['Date'] + '-' + response[0]['Time'] + '-' + request.headers['Name']
+                    name = name.replace("/", "")
+                    name = name.replace(":", "")
+                    os.rename('./images/image.jpg', './images/' + name + '.jpg')
+                    time.sleep(1)
+                    image = open('./images/' + name + '.jpg', 'rb')
+                    result = {0 : {'Status' : Face.add_new(image, name=request.headers['Name'], human_id=response[0]['Person ID'])}}
+                    image.close()
+                    print(result)
+                    return jsonify(result)
 
             return {0 : 'Error'}
         except FileNotFoundError as error:

@@ -86,14 +86,15 @@ def who_is_it(image):
 
             results = face_client.face.identify(face_ids, PERSON_GROUP_ID, max_num_of_candidates_returned=1, confidence_threshold=0.6)
             if not results:
-                result = default_dict(counter)
-                return result
-            else:
-                for candidate in results:
+                return 'No face'
+            for candidate in results:
+                if candidate.candidates != []:
                     person = face_client.person_group_person.get(PERSON_GROUP_ID, candidate.candidates[0].person_id)
                     result.update(default_dict(counter, person.name, candidate.candidates[0].confidence, person.person_id, face_ids[counter]))
-                    counter += 1
-                return result
+                else:
+                    result.update(default_dict(counter))
+                counter += 1
+            return result
 
     except NewConnectionError as error:
         print(error)
