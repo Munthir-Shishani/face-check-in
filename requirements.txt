@@ -16,7 +16,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 msrest==0.6.13
 oauthlib==3.1.0
-Pillow==9.3.0
+Pillow==10.3.0
 pylint==2.5.2
 pytz==2020.1
 requests==2.32.2
